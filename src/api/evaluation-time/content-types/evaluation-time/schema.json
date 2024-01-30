@@ -1,0 +1,22 @@
+{
+  "kind": "collectionType",
+  "collectionName": "evaluation_times",
+  "info": {
+    "singularName": "evaluation-time",
+    "pluralName": "evaluation-times",
+    "displayName": "EvaluationTime"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "months": {
+      "type": "integer",
+      "required": true
+    }
+  }
+}

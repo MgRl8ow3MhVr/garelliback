@@ -362,127 +362,6 @@ export interface AdminTransferTokenPermission extends Schema.CollectionType {
   };
 }
 
-export interface ApiEntityEntity extends Schema.CollectionType {
-  collectionName: 'entities';
-  info: {
-    singularName: 'entity';
-    pluralName: 'entities';
-    displayName: 'Entity';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    name: Attribute.String;
-    users: Attribute.Relation<
-      'api::entity.entity',
-      'oneToMany',
-      'plugin::users-permissions.user'
-    >;
-    teams: Attribute.Relation<
-      'api::entity.entity',
-      'oneToMany',
-      'api::team.team'
-    >;
-    teenagers: Attribute.Relation<
-      'api::entity.entity',
-      'oneToMany',
-      'api::teenager.teenager'
-    >;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::entity.entity',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::entity.entity',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
-export interface ApiTeamTeam extends Schema.CollectionType {
-  collectionName: 'teams';
-  info: {
-    singularName: 'team';
-    pluralName: 'teams';
-    displayName: 'Team';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    name: Attribute.String;
-    admin_user: Attribute.Relation<'api::team.team', 'oneToOne', 'admin::user'>;
-    entity: Attribute.Relation<
-      'api::team.team',
-      'manyToOne',
-      'api::entity.entity'
-    >;
-    users: Attribute.Relation<
-      'api::team.team',
-      'oneToMany',
-      'plugin::users-permissions.user'
-    >;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<'api::team.team', 'oneToOne', 'admin::user'> &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<'api::team.team', 'oneToOne', 'admin::user'> &
-      Attribute.Private;
-  };
-}
-
-export interface ApiTeenagerTeenager extends Schema.CollectionType {
-  collectionName: 'teenagers';
-  info: {
-    singularName: 'teenager';
-    pluralName: 'teenagers';
-    displayName: 'Teenager';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    first_name: Attribute.String;
-    last_name: Attribute.String;
-    birth_date: Attribute.Date;
-    entity: Attribute.Relation<
-      'api::teenager.teenager',
-      'manyToOne',
-      'api::entity.entity'
-    >;
-    educator: Attribute.Relation<
-      'api::teenager.teenager',
-      'manyToOne',
-      'plugin::users-permissions.user'
-    >;
-    photo: Attribute.Media;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::teenager.teenager',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::teenager.teenager',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
 export interface PluginUploadFile extends Schema.CollectionType {
   collectionName: 'files';
   info: {
@@ -812,6 +691,277 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
   };
 }
 
+export interface ApiCategoryCategory extends Schema.CollectionType {
+  collectionName: 'categories';
+  info: {
+    singularName: 'category';
+    pluralName: 'categories';
+    displayName: 'Category';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    name: Attribute.String & Attribute.Required & Attribute.Unique;
+    icon: Attribute.Media;
+    criteria: Attribute.Relation<
+      'api::category.category',
+      'oneToMany',
+      'api::criterion.criterion'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::category.category',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::category.category',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiCriterionCriterion extends Schema.CollectionType {
+  collectionName: 'criteria';
+  info: {
+    singularName: 'criterion';
+    pluralName: 'criteria';
+    displayName: 'Criterion';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    name: Attribute.String & Attribute.Required;
+    order: Attribute.Integer;
+    category: Attribute.Relation<
+      'api::criterion.criterion',
+      'manyToOne',
+      'api::category.category'
+    >;
+    icon: Attribute.Media;
+    weight: Attribute.Integer;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::criterion.criterion',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::criterion.criterion',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiEntityEntity extends Schema.CollectionType {
+  collectionName: 'entities';
+  info: {
+    singularName: 'entity';
+    pluralName: 'entities';
+    displayName: 'Entity';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    name: Attribute.String;
+    users: Attribute.Relation<
+      'api::entity.entity',
+      'oneToMany',
+      'plugin::users-permissions.user'
+    >;
+    teams: Attribute.Relation<
+      'api::entity.entity',
+      'oneToMany',
+      'api::team.team'
+    >;
+    teenagers: Attribute.Relation<
+      'api::entity.entity',
+      'oneToMany',
+      'api::teenager.teenager'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::entity.entity',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::entity.entity',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiEvaluationEvaluation extends Schema.CollectionType {
+  collectionName: 'evaluations';
+  info: {
+    singularName: 'evaluation';
+    pluralName: 'evaluations';
+    displayName: 'Evaluation';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    teenager: Attribute.Relation<
+      'api::evaluation.evaluation',
+      'manyToOne',
+      'api::teenager.teenager'
+    >;
+    evaluation_time: Attribute.Relation<
+      'api::evaluation.evaluation',
+      'oneToOne',
+      'api::evaluation-time.evaluation-time'
+    >;
+    answers: Attribute.JSON;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::evaluation.evaluation',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::evaluation.evaluation',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiEvaluationTimeEvaluationTime extends Schema.CollectionType {
+  collectionName: 'evaluation_times';
+  info: {
+    singularName: 'evaluation-time';
+    pluralName: 'evaluation-times';
+    displayName: 'EvaluationTime';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    name: Attribute.String;
+    months: Attribute.Integer & Attribute.Required;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::evaluation-time.evaluation-time',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::evaluation-time.evaluation-time',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiTeamTeam extends Schema.CollectionType {
+  collectionName: 'teams';
+  info: {
+    singularName: 'team';
+    pluralName: 'teams';
+    displayName: 'Team';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    name: Attribute.String;
+    admin_user: Attribute.Relation<'api::team.team', 'oneToOne', 'admin::user'>;
+    entity: Attribute.Relation<
+      'api::team.team',
+      'manyToOne',
+      'api::entity.entity'
+    >;
+    users: Attribute.Relation<
+      'api::team.team',
+      'oneToMany',
+      'plugin::users-permissions.user'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<'api::team.team', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<'api::team.team', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+  };
+}
+
+export interface ApiTeenagerTeenager extends Schema.CollectionType {
+  collectionName: 'teenagers';
+  info: {
+    singularName: 'teenager';
+    pluralName: 'teenagers';
+    displayName: 'Teenager';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    first_name: Attribute.String;
+    last_name: Attribute.String;
+    birth_date: Attribute.Date;
+    entity: Attribute.Relation<
+      'api::teenager.teenager',
+      'manyToOne',
+      'api::entity.entity'
+    >;
+    educator: Attribute.Relation<
+      'api::teenager.teenager',
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    photo: Attribute.Media;
+    evaluations: Attribute.Relation<
+      'api::teenager.teenager',
+      'oneToMany',
+      'api::evaluation.evaluation'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::teenager.teenager',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::teenager.teenager',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 declare module '@strapi/types' {
   export module Shared {
     export interface ContentTypes {
@@ -822,15 +972,19 @@ declare module '@strapi/types' {
       'admin::api-token-permission': AdminApiTokenPermission;
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
-      'api::entity.entity': ApiEntityEntity;
-      'api::team.team': ApiTeamTeam;
-      'api::teenager.teenager': ApiTeenagerTeenager;
       'plugin::upload.file': PluginUploadFile;
       'plugin::upload.folder': PluginUploadFolder;
       'plugin::i18n.locale': PluginI18NLocale;
       'plugin::users-permissions.permission': PluginUsersPermissionsPermission;
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
+      'api::category.category': ApiCategoryCategory;
+      'api::criterion.criterion': ApiCriterionCriterion;
+      'api::entity.entity': ApiEntityEntity;
+      'api::evaluation.evaluation': ApiEvaluationEvaluation;
+      'api::evaluation-time.evaluation-time': ApiEvaluationTimeEvaluationTime;
+      'api::team.team': ApiTeamTeam;
+      'api::teenager.teenager': ApiTeenagerTeenager;
     }
   }
 }

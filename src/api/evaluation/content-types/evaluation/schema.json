@@ -1,0 +1,29 @@
+{
+  "kind": "collectionType",
+  "collectionName": "evaluations",
+  "info": {
+    "singularName": "evaluation",
+    "pluralName": "evaluations",
+    "displayName": "Evaluation"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "teenager": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::teenager.teenager",
+      "inversedBy": "evaluations"
+    },
+    "evaluation_time": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::evaluation-time.evaluation-time"
+    },
+    "answers": {
+      "type": "json"
+    }
+  }
+}
