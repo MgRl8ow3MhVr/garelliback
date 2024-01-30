@@ -362,54 +362,120 @@ export interface AdminTransferTokenPermission extends Schema.CollectionType {
   };
 }
 
-export interface ApiAssoAsso extends Schema.CollectionType {
-  collectionName: 'assos';
+export interface ApiEntityEntity extends Schema.CollectionType {
+  collectionName: 'entities';
   info: {
-    singularName: 'asso';
-    pluralName: 'assos';
-    displayName: 'Asso';
+    singularName: 'entity';
+    pluralName: 'entities';
+    displayName: 'Entity';
   };
   options: {
     draftAndPublish: true;
   };
   attributes: {
     name: Attribute.String;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<'api::asso.asso', 'oneToOne', 'admin::user'> &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<'api::asso.asso', 'oneToOne', 'admin::user'> &
-      Attribute.Private;
-  };
-}
-
-export interface ApiProductProduct extends Schema.CollectionType {
-  collectionName: 'products';
-  info: {
-    singularName: 'product';
-    pluralName: 'products';
-    displayName: 'product';
-    description: '';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    name: Attribute.String;
-    available: Attribute.Boolean;
-    imageproduit: Attribute.Media;
+    users: Attribute.Relation<
+      'api::entity.entity',
+      'oneToMany',
+      'plugin::users-permissions.user'
+    >;
+    teams: Attribute.Relation<
+      'api::entity.entity',
+      'oneToMany',
+      'api::team.team'
+    >;
+    teenagers: Attribute.Relation<
+      'api::entity.entity',
+      'oneToMany',
+      'api::teenager.teenager'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
-      'api::product.product',
+      'api::entity.entity',
       'oneToOne',
       'admin::user'
     > &
       Attribute.Private;
     updatedBy: Attribute.Relation<
-      'api::product.product',
+      'api::entity.entity',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiTeamTeam extends Schema.CollectionType {
+  collectionName: 'teams';
+  info: {
+    singularName: 'team';
+    pluralName: 'teams';
+    displayName: 'Team';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    name: Attribute.String;
+    admin_user: Attribute.Relation<'api::team.team', 'oneToOne', 'admin::user'>;
+    entity: Attribute.Relation<
+      'api::team.team',
+      'manyToOne',
+      'api::entity.entity'
+    >;
+    users: Attribute.Relation<
+      'api::team.team',
+      'oneToMany',
+      'plugin::users-permissions.user'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<'api::team.team', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<'api::team.team', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+  };
+}
+
+export interface ApiTeenagerTeenager extends Schema.CollectionType {
+  collectionName: 'teenagers';
+  info: {
+    singularName: 'teenager';
+    pluralName: 'teenagers';
+    displayName: 'Teenager';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    first_name: Attribute.String;
+    last_name: Attribute.String;
+    birth_date: Attribute.Date;
+    entity: Attribute.Relation<
+      'api::teenager.teenager',
+      'manyToOne',
+      'api::entity.entity'
+    >;
+    educator: Attribute.Relation<
+      'api::teenager.teenager',
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    photo: Attribute.Media;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::teenager.teenager',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::teenager.teenager',
       'oneToOne',
       'admin::user'
     > &
@@ -714,7 +780,21 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'manyToOne',
       'plugin::users-permissions.role'
     >;
-    asso: Attribute.String;
+    entity: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'manyToOne',
+      'api::entity.entity'
+    >;
+    team: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'manyToOne',
+      'api::team.team'
+    >;
+    teenagers: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'oneToMany',
+      'api::teenager.teenager'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -742,8 +822,9 @@ declare module '@strapi/types' {
       'admin::api-token-permission': AdminApiTokenPermission;
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
-      'api::asso.asso': ApiAssoAsso;
-      'api::product.product': ApiProductProduct;
+      'api::entity.entity': ApiEntityEntity;
+      'api::team.team': ApiTeamTeam;
+      'api::teenager.teenager': ApiTeenagerTeenager;
       'plugin::upload.file': PluginUploadFile;
       'plugin::upload.folder': PluginUploadFolder;
       'plugin::i18n.locale': PluginI18NLocale;

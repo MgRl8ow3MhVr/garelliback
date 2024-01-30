@@ -1,9 +1,9 @@
 'use strict';
 
 /**
- * asso service
+ * team service
  */
 
 const { createCoreService } = require('@strapi/strapi').factories;
 
-module.exports = createCoreService('api::asso.asso');
+module.exports = createCoreService('api::team.team');

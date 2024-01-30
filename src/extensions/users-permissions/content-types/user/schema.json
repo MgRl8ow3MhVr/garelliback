@@ -65,8 +65,23 @@
       "inversedBy": "users",
       "configurable": false
     },
-    "asso": {
-      "type": "string"
+    "entity": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::entity.entity",
+      "inversedBy": "users"
+    },
+    "team": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::team.team",
+      "inversedBy": "users"
+    },
+    "teenagers": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::teenager.teenager",
+      "mappedBy": "educator"
     }
   }
 }
