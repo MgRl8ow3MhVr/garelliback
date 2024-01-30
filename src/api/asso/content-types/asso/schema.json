@@ -1,0 +1,18 @@
+{
+  "kind": "collectionType",
+  "collectionName": "assos",
+  "info": {
+    "singularName": "asso",
+    "pluralName": "assos",
+    "displayName": "Asso"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    }
+  }
+}
