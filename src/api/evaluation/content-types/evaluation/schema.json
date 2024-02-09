@@ -4,10 +4,11 @@
   "info": {
     "singularName": "evaluation",
     "pluralName": "evaluations",
-    "displayName": "Evaluation"
+    "displayName": "Evaluation",
+    "description": ""
   },
   "options": {
-    "draftAndPublish": true
+    "draftAndPublish": false
   },
   "pluginOptions": {},
   "attributes": {
@@ -24,6 +25,20 @@
     },
     "answers": {
       "type": "json"
+    },
+    "status": {
+      "type": "string",
+      "required": true
+    },
+    "latest": {
+      "type": "json"
+    },
+    "entity": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::entity.entity",
+      "private": true,
+      "inversedBy": "evaluations"
     }
   }
 }

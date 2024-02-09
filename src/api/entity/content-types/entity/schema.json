@@ -31,6 +31,12 @@
       "relation": "oneToMany",
       "target": "api::teenager.teenager",
       "mappedBy": "entity"
+    },
+    "evaluations": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::evaluation.evaluation",
+      "mappedBy": "entity"
     }
   }
 }

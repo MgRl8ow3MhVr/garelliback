@@ -4,7 +4,8 @@
   "info": {
     "singularName": "criterion",
     "pluralName": "criteria",
-    "displayName": "Criterion"
+    "displayName": "Criterion",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -16,7 +17,8 @@
       "required": true
     },
     "order": {
-      "type": "integer"
+      "type": "integer",
+      "unique": false
     },
     "category": {
       "type": "relation",
@@ -25,17 +27,22 @@
       "inversedBy": "criteria"
     },
     "icon": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos",
         "audios"
-      ],
-      "type": "media",
-      "multiple": false
+      ]
     },
     "weight": {
       "type": "integer"
+    },
+    "scale": {
+      "type": "integer",
+      "default": 3
     }
   }
 }

@@ -697,6 +697,7 @@ export interface ApiCategoryCategory extends Schema.CollectionType {
     singularName: 'category';
     pluralName: 'categories';
     displayName: 'Category';
+    description: '';
   };
   options: {
     draftAndPublish: true;
@@ -709,6 +710,7 @@ export interface ApiCategoryCategory extends Schema.CollectionType {
       'oneToMany',
       'api::criterion.criterion'
     >;
+    order: Attribute.Integer & Attribute.Unique;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -733,6 +735,7 @@ export interface ApiCriterionCriterion extends Schema.CollectionType {
     singularName: 'criterion';
     pluralName: 'criteria';
     displayName: 'Criterion';
+    description: '';
   };
   options: {
     draftAndPublish: true;
@@ -747,6 +750,7 @@ export interface ApiCriterionCriterion extends Schema.CollectionType {
     >;
     icon: Attribute.Media;
     weight: Attribute.Integer;
+    scale: Attribute.Integer & Attribute.DefaultTo<3>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -792,6 +796,11 @@ export interface ApiEntityEntity extends Schema.CollectionType {
       'oneToMany',
       'api::teenager.teenager'
     >;
+    evaluations: Attribute.Relation<
+      'api::entity.entity',
+      'oneToMany',
+      'api::evaluation.evaluation'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -816,9 +825,10 @@ export interface ApiEvaluationEvaluation extends Schema.CollectionType {
     singularName: 'evaluation';
     pluralName: 'evaluations';
     displayName: 'Evaluation';
+    description: '';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     teenager: Attribute.Relation<
@@ -832,9 +842,16 @@ export interface ApiEvaluationEvaluation extends Schema.CollectionType {
       'api::evaluation-time.evaluation-time'
     >;
     answers: Attribute.JSON;
+    status: Attribute.String & Attribute.Required;
+    latest: Attribute.JSON;
+    entity: Attribute.Relation<
+      'api::evaluation.evaluation',
+      'manyToOne',
+      'api::entity.entity'
+    > &
+      Attribute.Private;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
       'api::evaluation.evaluation',
       'oneToOne',
@@ -922,7 +939,8 @@ export interface ApiTeenagerTeenager extends Schema.CollectionType {
     displayName: 'Teenager';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
+    populateCreatorFields: false;
   };
   attributes: {
     first_name: Attribute.String;
@@ -946,7 +964,6 @@ export interface ApiTeenagerTeenager extends Schema.CollectionType {
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
       'api::teenager.teenager',
       'oneToOne',
