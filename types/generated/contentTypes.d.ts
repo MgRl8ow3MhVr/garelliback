@@ -739,6 +739,13 @@ export interface ApiCriterionCriterion extends Schema.CollectionType {
   };
   options: {
     draftAndPublish: true;
+    privateAttributes: [
+      'createdAt',
+      'updatedAt',
+      'publishedAt',
+      'createdBy',
+      'updatedBy'
+    ];
   };
   attributes: {
     name: Attribute.String & Attribute.Required;
@@ -829,6 +836,13 @@ export interface ApiEvaluationEvaluation extends Schema.CollectionType {
   };
   options: {
     draftAndPublish: false;
+    privateAttributes: [
+      'createdAt',
+      'updatedAt',
+      'publishedAt',
+      'createdBy',
+      'updatedBy'
+    ];
   };
   attributes: {
     teenager: Attribute.Relation<
@@ -875,14 +889,14 @@ export interface ApiEvaluationTimeEvaluationTime extends Schema.CollectionType {
     displayName: 'EvaluationTime';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
+    privateAttributes: ['createdAt', 'updatedAt'];
   };
   attributes: {
     name: Attribute.String;
     months: Attribute.Integer & Attribute.Required;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
       'api::evaluation-time.evaluation-time',
       'oneToOne',
@@ -941,6 +955,13 @@ export interface ApiTeenagerTeenager extends Schema.CollectionType {
   options: {
     draftAndPublish: false;
     populateCreatorFields: false;
+    privateAttributes: [
+      'createdAt',
+      'updatedAt',
+      'publishedAt',
+      'createdBy',
+      'updatedBy'
+    ];
   };
   attributes: {
     first_name: Attribute.String;
