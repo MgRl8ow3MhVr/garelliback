@@ -8,14 +8,7 @@
     "description": ""
   },
   "options": {
-    "draftAndPublish": false,
-    "privateAttributes": [
-      "createdAt",
-      "updatedAt",
-      "publishedAt",
-      "createdBy",
-      "updatedBy"
-    ]
+    "draftAndPublish": false
   },
   "pluginOptions": {},
   "attributes": {
@@ -46,6 +39,12 @@
       "target": "api::entity.entity",
       "private": true,
       "inversedBy": "evaluations"
+    },
+    "progression": {
+      "type": "json"
+    },
+    "submission_date": {
+      "type": "date"
     }
   }
 }

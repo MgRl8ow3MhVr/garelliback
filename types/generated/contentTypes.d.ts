@@ -701,6 +701,13 @@ export interface ApiCategoryCategory extends Schema.CollectionType {
   };
   options: {
     draftAndPublish: true;
+    privateAttributes: [
+      'createdAt',
+      'updatedAt',
+      'publishedAt',
+      'createdBy',
+      'updatedBy'
+    ];
   };
   attributes: {
     name: Attribute.String & Attribute.Required & Attribute.Unique;
@@ -836,13 +843,6 @@ export interface ApiEvaluationEvaluation extends Schema.CollectionType {
   };
   options: {
     draftAndPublish: false;
-    privateAttributes: [
-      'createdAt',
-      'updatedAt',
-      'publishedAt',
-      'createdBy',
-      'updatedBy'
-    ];
   };
   attributes: {
     teenager: Attribute.Relation<
@@ -864,6 +864,8 @@ export interface ApiEvaluationEvaluation extends Schema.CollectionType {
       'api::entity.entity'
     > &
       Attribute.Private;
+    progression: Attribute.JSON;
+    submission_date: Attribute.Date;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
