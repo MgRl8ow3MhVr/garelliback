@@ -11,8 +11,10 @@ module.exports = createCoreController(
   ({ strapi }) => ({
     async addanswer(ctx) {
       await this.validateQuery(ctx);
-      const sanitizedQueryParams = await this.sanitizeQuery(ctx);
-
+      const params = await this.sanitizeQuery(ctx);
+      const { cat_index, crit_index, value } = params;
+      const cat_index_num = Number(cat_index);
+      const crit_index_num = Number(crit_index);
       // Extract parameters from the request
       const id = ctx.params.id;
 
@@ -25,51 +27,85 @@ module.exports = createCoreController(
       }
 
       const answers = recordToUpdate.answers;
-      const key = String(sanitizedQueryParams?.criteria);
-      const value = sanitizedQueryParams?.answer;
+      const progression = recordToUpdate.progression;
 
-      if (key && value) {
-        answers[key] = value;
+      // check if all data are accessible
+      if (
+        isNaN(cat_index_num) ||
+        isNaN(crit_index_num) ||
+        value === undefined ||
+        !answers[cat_index_num] ||
+        !answers[cat_index_num]?.criteria[crit_index_num]
+      ) {
+        return ctx.badRequest("wrong argument or missing argument");
       }
+
+      // insert new answer
+      const criteria = answers[cat_index_num].criteria;
+      criteria[crit_index_num].answer = value;
+
+      // calculate new progression
+      const answered_num = criteria.reduce(
+        (acc, current) => acc + !!current.answer,
+        0
+      );
+      const new_progression = criteria.length
+        ? Math.floor((answered_num / criteria.length) * 100)
+        : 0;
+      progression[cat_index_num].percent = new_progression;
+
+      // new latest
+      const latest = { category: cat_index_num, criterion: crit_index_num };
+
+      // now update
       const result = await strapi.entityService.update(
         "api::evaluation.evaluation",
-        1,
+        id,
         {
           data: {
             answers,
+            progression,
+            latest,
           },
         }
       );
       const sanitizedResults = await this.sanitizeOutput(result, ctx);
-
       return this.transformResponse(sanitizedResults);
     },
     async create(ctx) {
       const res = await strapi.service("api::category.category").find({
-        populate: ["criteria"],
+        populate: {
+          criteria: {
+            sort: "order:asc",
+            fields: ["name", "weight", "scale"],
+            populate: {
+              icon: {
+                fields: ["url"],
+              },
+            },
+          },
+          icon: {
+            fields: ["url"],
+          },
+        },
+        fields: ["name"],
+        sort: "order",
       });
       const allCats = res?.results;
+      const progression = [];
 
-      allCats.sort((a, b) => a.order - b.order);
-      // console.log(allCats.results[0].criteria);
-      const answers = {};
       allCats.forEach((cat) => {
-        delete cat.createdAt;
-        delete cat.updatedAt;
-        delete cat.publishedAt;
-        // answers[cat.name].infos='test'
+        progression.push({ name: cat.name, id: cat.id, percent: 0 });
       });
-      console.log(allCats);
 
       //@ts-ignore
       const body = ctx?.request?.body;
-      console.log(body);
       body.data.status = "started";
-      // body.data.answers = {}
-      // const result = await super.create(ctx);
+      body.data.progression = progression;
+      body.data.answers = allCats;
+      const result = await super.create(ctx);
 
-      // return result;
-      return "test";
+      return result;
     },
   })
 );
