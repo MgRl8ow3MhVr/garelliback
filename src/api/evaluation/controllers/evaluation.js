@@ -95,7 +95,12 @@ module.exports = createCoreController(
       const progression = [];
 
       allCats.forEach((cat) => {
-        progression.push({ name: cat.name, id: cat.id, percent: 0 });
+        progression.push({
+          name: cat.name,
+          id: cat.id,
+          percent: 0,
+          url: cat.icon?.url,
+        });
       });
 
       //@ts-ignore
