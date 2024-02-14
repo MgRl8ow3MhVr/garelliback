@@ -28,7 +28,7 @@
     },
     "status": {
       "type": "string",
-      "required": true
+      "required": false
     },
     "latest": {
       "type": "json"

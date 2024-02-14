@@ -103,11 +103,20 @@ module.exports = createCoreController(
         });
       });
 
-      //@ts-ignore
-      const body = ctx?.request?.body;
-      body.data.status = "started";
-      body.data.progression = progression;
-      body.data.answers = allCats;
+      // const body = ctx?.request?.body;
+      // console.log("body");
+      // console.log(body);
+      // @ts-ignore
+      ctx.request.body.data = {
+        // @ts-ignore
+        ...ctx.request.body.data,
+        progression,
+        answers: allCats,
+        status: "started",
+      };
+      // body.data.progression = progression;
+      // body.data.status = "started";
+      // body.data.answers = allCats;
       const result = await super.create(ctx);
 
       return result;

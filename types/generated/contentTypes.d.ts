@@ -856,7 +856,7 @@ export interface ApiEvaluationEvaluation extends Schema.CollectionType {
       'api::evaluation-time.evaluation-time'
     >;
     answers: Attribute.JSON;
-    status: Attribute.String & Attribute.Required;
+    status: Attribute.String;
     latest: Attribute.JSON;
     entity: Attribute.Relation<
       'api::evaluation.evaluation',
