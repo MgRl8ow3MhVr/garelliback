@@ -87,6 +87,9 @@ module.exports = createCoreController(
           icon: {
             fields: ["url"],
           },
+          icon2: {
+            fields: ["url"],
+          },
         },
         fields: ["name"],
         sort: "order",
@@ -100,6 +103,7 @@ module.exports = createCoreController(
           id: cat.id,
           percent: 0,
           url: cat.icon?.url,
+          url2: cat.icon2?.url,
         });
       });
 

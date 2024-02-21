@@ -8,15 +8,7 @@
     "description": ""
   },
   "options": {
-    "draftAndPublish": true,
-    "privateAttributes": [
-      "createdAt",
-      "updatedAt",
-      "publishedAt",
-      "createdBy",
-      "updatedBy"
-    ]
-    
+    "draftAndPublish": true
   },
   "pluginOptions": {},
   "attributes": {
@@ -45,6 +37,16 @@
     "order": {
       "type": "integer",
       "unique": true
+    },
+    "icon2": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": false
     }
   }
 }

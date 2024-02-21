@@ -701,13 +701,6 @@ export interface ApiCategoryCategory extends Schema.CollectionType {
   };
   options: {
     draftAndPublish: true;
-    privateAttributes: [
-      'createdAt',
-      'updatedAt',
-      'publishedAt',
-      'createdBy',
-      'updatedBy'
-    ];
   };
   attributes: {
     name: Attribute.String & Attribute.Required & Attribute.Unique;
@@ -718,6 +711,7 @@ export interface ApiCategoryCategory extends Schema.CollectionType {
       'api::criterion.criterion'
     >;
     order: Attribute.Integer & Attribute.Unique;
+    icon2: Attribute.Media;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
