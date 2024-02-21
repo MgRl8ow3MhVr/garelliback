@@ -33,18 +33,17 @@
     "latest": {
       "type": "json"
     },
-    "entity": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::entity.entity",
-      "private": true,
-      "inversedBy": "evaluations"
-    },
     "progression": {
       "type": "json"
     },
     "submission_date": {
       "type": "date"
+    },
+    "results": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::result.result",
+      "mappedBy": "evaluation"
     }
   }
 }

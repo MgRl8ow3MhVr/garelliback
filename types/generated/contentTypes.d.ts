@@ -783,6 +783,7 @@ export interface ApiEntityEntity extends Schema.CollectionType {
     singularName: 'entity';
     pluralName: 'entities';
     displayName: 'Entity';
+    description: '';
   };
   options: {
     draftAndPublish: true;
@@ -803,11 +804,6 @@ export interface ApiEntityEntity extends Schema.CollectionType {
       'api::entity.entity',
       'oneToMany',
       'api::teenager.teenager'
-    >;
-    evaluations: Attribute.Relation<
-      'api::entity.entity',
-      'oneToMany',
-      'api::evaluation.evaluation'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
@@ -852,14 +848,13 @@ export interface ApiEvaluationEvaluation extends Schema.CollectionType {
     answers: Attribute.JSON;
     status: Attribute.String;
     latest: Attribute.JSON;
-    entity: Attribute.Relation<
-      'api::evaluation.evaluation',
-      'manyToOne',
-      'api::entity.entity'
-    > &
-      Attribute.Private;
     progression: Attribute.JSON;
     submission_date: Attribute.Date;
+    results: Attribute.Relation<
+      'api::evaluation.evaluation',
+      'oneToMany',
+      'api::result.result'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -901,6 +896,59 @@ export interface ApiEvaluationTimeEvaluationTime extends Schema.CollectionType {
       Attribute.Private;
     updatedBy: Attribute.Relation<
       'api::evaluation-time.evaluation-time',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiResultResult extends Schema.CollectionType {
+  collectionName: 'results';
+  info: {
+    singularName: 'result';
+    pluralName: 'results';
+    displayName: 'result';
+    description: '';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    evaluation: Attribute.Relation<
+      'api::result.result',
+      'manyToOne',
+      'api::evaluation.evaluation'
+    >;
+    evaluation_time: Attribute.Relation<
+      'api::result.result',
+      'oneToOne',
+      'api::evaluation-time.evaluation-time'
+    >;
+    entity: Attribute.Relation<
+      'api::result.result',
+      'oneToOne',
+      'api::entity.entity'
+    >;
+    teenager: Attribute.Relation<
+      'api::result.result',
+      'oneToOne',
+      'api::teenager.teenager'
+    >;
+    category: Attribute.String;
+    result: Attribute.Decimal;
+    teenager_name: Attribute.String;
+    evaluation_time_name: Attribute.String;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::result.result',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::result.result',
       'oneToOne',
       'admin::user'
     > &
@@ -1017,6 +1065,7 @@ declare module '@strapi/types' {
       'api::entity.entity': ApiEntityEntity;
       'api::evaluation.evaluation': ApiEvaluationEvaluation;
       'api::evaluation-time.evaluation-time': ApiEvaluationTimeEvaluationTime;
+      'api::result.result': ApiResultResult;
       'api::team.team': ApiTeamTeam;
       'api::teenager.teenager': ApiTeenagerTeenager;
     }

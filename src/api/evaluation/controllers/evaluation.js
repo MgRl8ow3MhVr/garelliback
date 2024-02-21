@@ -107,9 +107,6 @@ module.exports = createCoreController(
         });
       });
 
-      // const body = ctx?.request?.body;
-      // console.log("body");
-      // console.log(body);
       // @ts-ignore
       ctx.request.body.data = {
         // @ts-ignore
@@ -118,9 +115,6 @@ module.exports = createCoreController(
         answers: allCats,
         status: "started",
       };
-      // body.data.progression = progression;
-      // body.data.status = "started";
-      // body.data.answers = allCats;
       const result = await super.create(ctx);
 
       return result;

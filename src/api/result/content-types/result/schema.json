@@ -1,0 +1,49 @@
+{
+  "kind": "collectionType",
+  "collectionName": "results",
+  "info": {
+    "singularName": "result",
+    "pluralName": "results",
+    "displayName": "result",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "evaluation": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::evaluation.evaluation",
+      "inversedBy": "results"
+    },
+    "evaluation_time": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::evaluation-time.evaluation-time"
+    },
+    "entity": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::entity.entity"
+    },
+    "teenager": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::teenager.teenager"
+    },
+    "category": {
+      "type": "string"
+    },
+    "result": {
+      "type": "decimal"
+    },
+    "teenager_name": {
+      "type": "string"
+    },
+    "evaluation_time_name": {
+      "type": "string"
+    }
+  }
+}
