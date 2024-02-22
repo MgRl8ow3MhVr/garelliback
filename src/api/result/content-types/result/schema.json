@@ -18,17 +18,7 @@
       "target": "api::evaluation.evaluation",
       "inversedBy": "results"
     },
-    "evaluation_time": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::evaluation-time.evaluation-time"
-    },
-    "entity": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::entity.entity"
-    },
-    "teenager": {
+    "teenager_id": {
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::teenager.teenager"
@@ -42,8 +32,14 @@
     "teenager_name": {
       "type": "string"
     },
-    "evaluation_time_name": {
+    "evaluation_time": {
       "type": "string"
+    },
+    "teenager_entry": {
+      "type": "date"
+    },
+    "teenager_exit": {
+      "type": "date"
     }
   }
 }

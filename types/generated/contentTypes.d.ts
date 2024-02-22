@@ -920,17 +920,7 @@ export interface ApiResultResult extends Schema.CollectionType {
       'manyToOne',
       'api::evaluation.evaluation'
     >;
-    evaluation_time: Attribute.Relation<
-      'api::result.result',
-      'oneToOne',
-      'api::evaluation-time.evaluation-time'
-    >;
-    entity: Attribute.Relation<
-      'api::result.result',
-      'oneToOne',
-      'api::entity.entity'
-    >;
-    teenager: Attribute.Relation<
+    teenager_id: Attribute.Relation<
       'api::result.result',
       'oneToOne',
       'api::teenager.teenager'
@@ -938,7 +928,9 @@ export interface ApiResultResult extends Schema.CollectionType {
     category: Attribute.String;
     result: Attribute.Decimal;
     teenager_name: Attribute.String;
-    evaluation_time_name: Attribute.String;
+    evaluation_time: Attribute.String;
+    teenager_entry: Attribute.Date;
+    teenager_exit: Attribute.Date;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -995,17 +987,10 @@ export interface ApiTeenagerTeenager extends Schema.CollectionType {
     singularName: 'teenager';
     pluralName: 'teenagers';
     displayName: 'Teenager';
+    description: '';
   };
   options: {
     draftAndPublish: false;
-    populateCreatorFields: false;
-    privateAttributes: [
-      'createdAt',
-      'updatedAt',
-      'publishedAt',
-      'createdBy',
-      'updatedBy'
-    ];
   };
   attributes: {
     first_name: Attribute.String;
@@ -1027,6 +1012,8 @@ export interface ApiTeenagerTeenager extends Schema.CollectionType {
       'oneToMany',
       'api::evaluation.evaluation'
     >;
+    entry_date: Attribute.Date;
+    exit_date: Attribute.Date;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<

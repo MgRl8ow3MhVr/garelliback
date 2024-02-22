@@ -12,7 +12,7 @@ module.exports = createCoreController("api::result.result", ({ strapi }) => ({
     const params = await this.sanitizeQuery(ctx);
     const id = ctx.params.id;
 
-    let evaluation = await strapi.entityService.findOne(
+    let ev = await strapi.entityService.findOne(
       "api::evaluation.evaluation",
       id,
       {
@@ -28,32 +28,38 @@ module.exports = createCoreController("api::result.result", ({ strapi }) => ({
         },
       }
     );
-    if (!evaluation) {
+    if (!ev) {
       return ctx.notFound("Record not found");
     }
-
-    console.log("EVAL");
-
-    const entity = evaluation.teenager?.entity?.id;
-    const teenager = evaluation.teenager;
-    const evaluation_time = evaluation.evaluation_time.id;
-    for (const ev in evaluation.answers) {
-      const cat = evaluation.answers[ev];
-      console.log(cat);
+    const resultToSend = [];
+    for (const i in ev.answers) {
+      const cat = ev.answers[i];
+      const criteria = cat.criteria;
+      let sumWeight = 0;
+      let accumulator = 0;
+      for (const j in criteria) {
+        const c = criteria[j];
+        sumWeight += c.weight;
+        accumulator +=
+          !isNaN(c.answer) && c.scale ? (c.answer * c.weight) / c.scale : 0;
+      }
+      const score =
+        sumWeight !== 0 ? Math.round((accumulator / sumWeight) * 100) / 100 : 0;
       const result = await strapi.entityService.create("api::result.result", {
         data: {
           evaluation: id,
           category: cat.name,
-          result: 1.1,
-          evaluation_time,
-          entity,
-          teenager: teenager.id,
-          teenager_name: teenager.first_name + teenager.last_name,
+          result: score,
+          evaluation_time: ev.evaluation_time.name,
+          entity: ev.teenager?.entity?.name,
+          teenager: ev.teenager.id,
+          teenager_name: ` ${ev.teenager.first_name} ${ev.teenager.last_name}`,
         },
       });
+      resultToSend.push(result);
     }
-    // ET LE TOTAL ICI
-
-    return true;
+    // return true;
+    const sanitizedResults = await this.sanitizeOutput(resultToSend, ctx);
+    return this.transformResponse(sanitizedResults);
   },
 }));

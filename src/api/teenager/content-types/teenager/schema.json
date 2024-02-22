@@ -4,18 +4,11 @@
   "info": {
     "singularName": "teenager",
     "pluralName": "teenagers",
-    "displayName": "Teenager"
+    "displayName": "Teenager",
+    "description": ""
   },
   "options": {
-    "draftAndPublish": false,
-    "populateCreatorFields": false,
-    "privateAttributes": [
-      "createdAt",
-      "updatedAt",
-      "publishedAt",
-      "createdBy",
-      "updatedBy"
-    ]
+    "draftAndPublish": false
   },
   "pluginOptions": {},
   "attributes": {
@@ -41,20 +34,27 @@
       "inversedBy": "teenagers"
     },
     "photo": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos",
         "audios"
-      ],
-      "type": "media",
-      "multiple": false
+      ]
     },
     "evaluations": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::evaluation.evaluation",
       "mappedBy": "teenager"
+    },
+    "entry_date": {
+      "type": "date"
+    },
+    "exit_date": {
+      "type": "date"
     }
   }
 }
