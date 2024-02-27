@@ -49,13 +49,15 @@ module.exports = createCoreController("api::result.result", ({ strapi }) => ({
         data: {
           evaluation: id,
           category: cat.name,
-          result: score,
           evaluation_time: ev.evaluation_time.name,
           entity: ev.teenager?.entity?.name,
           teenager_id: ev.teenager.id,
           teenager_name: ` ${ev.teenager.first_name} ${ev.teenager.last_name}`,
           teenager_entry: ev.teenager.entry_date,
           teenager_exit: ev.teenager.exit_date,
+          result_percent: score,
+          result_total: accumulator,
+          result_max: sumWeight,
         },
       });
       resultToSend.push(result);

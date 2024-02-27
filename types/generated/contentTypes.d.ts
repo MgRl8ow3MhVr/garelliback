@@ -926,11 +926,13 @@ export interface ApiResultResult extends Schema.CollectionType {
       'api::teenager.teenager'
     >;
     category: Attribute.String;
-    result: Attribute.Decimal;
+    result_percent: Attribute.Decimal;
     teenager_name: Attribute.String;
     evaluation_time: Attribute.String;
     teenager_entry: Attribute.Date;
     teenager_exit: Attribute.Date;
+    result_total: Attribute.Decimal;
+    result_max: Attribute.Decimal;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<

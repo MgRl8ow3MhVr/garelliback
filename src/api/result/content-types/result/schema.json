@@ -26,7 +26,7 @@
     "category": {
       "type": "string"
     },
-    "result": {
+    "result_percent": {
       "type": "decimal"
     },
     "teenager_name": {
@@ -40,6 +40,12 @@
     },
     "teenager_exit": {
       "type": "date"
+    },
+    "result_total": {
+      "type": "decimal"
+    },
+    "result_max": {
+      "type": "decimal"
     }
   }
 }
