@@ -55,9 +55,9 @@ module.exports = createCoreController("api::result.result", ({ strapi }) => ({
           teenager_name: ` ${ev.teenager.first_name} ${ev.teenager.last_name}`,
           teenager_entry: ev.teenager.entry_date,
           teenager_exit: ev.teenager.exit_date,
-          result_percent: score,
-          result_total: accumulator,
-          result_max: sumWeight,
+          result_percent: String(score).replace(".", ","),
+          result_total: String(accumulator.toFixed(2)).replace(".", ","),
+          result_max: String(sumWeight).replace(".", ","),
         },
       });
       resultToSend.push(result);
