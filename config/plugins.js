@@ -15,5 +15,21 @@ module.exports = ({ env }) => ({
       },
     },
   },
-  // ...
+  email: {
+    config: {
+      provider: "nodemailer",
+      providerOptions: {
+        host: env("SMTP_HOST", "smtp-mail.outlook.com"),
+        port: env("SMTP_PORT", 587),
+        auth: {
+          user: env("MAILUSER"),
+          pass: env("MAILSECRET"),
+        },
+      },
+      settings: {
+        defaultFrom: "admin-eval@garelli95.org",
+        defaultReplyTo: "no-reply@garelli95.org",
+      },
+    },
+  },
 });

@@ -855,6 +855,7 @@ export interface ApiEvaluationEvaluation extends Schema.CollectionType {
       'oneToMany',
       'api::result.result'
     >;
+    emailsent: Attribute.Boolean & Attribute.DefaultTo<false>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
