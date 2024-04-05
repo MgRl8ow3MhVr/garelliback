@@ -30,7 +30,6 @@ module.exports = {
       );
 
       entries.forEach(async (entry) => {
-        console.log(`evaluating eval ${entry.id}`);
         const evalMonths = entry?.evaluation_time?.months;
         const entryDate = new Date(entry?.teenager?.entry_date);
         const now = new Date(Date.now());
@@ -41,6 +40,7 @@ module.exports = {
         const diffDays = Math.ceil(
           (dueDate.valueOf() - now.valueOf()) / (1000 * 60 * 60 * 24)
         );
+        console.log(`evaluating eval ${entry.id} - to do in ${diffDays} days`);
 
         if (diffDays <= Number(process.env.DAYSREMINDER) && diffDays >= -2) {
           const email = entry?.teenager?.educator?.email;
