@@ -6,11 +6,12 @@ module.exports = {
 
   myJob: {
     task: async ({ strapi }) => {
-      console.log("CRON GO");
+      console.log("- - - - - - EMAIL CRON START - - - - - - - ");
+      console.log(new Date(Date.now()));
       const entries = await strapi.entityService.findMany(
         "api::evaluation.evaluation",
         {
-          fields: ["status"],
+          fields: ["status", "emailsent"],
           filters: { status: "started", emailsent: false },
           populate: {
             teenager: {
@@ -22,20 +23,71 @@ module.exports = {
               },
             },
             evaluation_time: {
-              fields: ["months"],
+              fields: ["months", "name"],
             },
           },
         }
       );
 
-      entries.forEach((entry) => {
-        console.log(entry);
-      });
+      entries.forEach(async (entry) => {
+        console.log(`evaluating eval ${entry.id}`);
+        const evalMonths = entry?.evaluation_time?.months;
+        const entryDate = new Date(entry?.teenager?.entry_date);
+        const now = new Date(Date.now());
+        const dueDate = new Date(
+          entryDate.setMonth(entryDate.getMonth() + Number(evalMonths))
+        );
 
-      // Add your own logic here (e.g. send a queue of email, create a database backup, etc.).
+        const diffDays = Math.ceil(
+          (dueDate.valueOf() - now.valueOf()) / (1000 * 60 * 60 * 24)
+        );
+
+        if (diffDays <= Number(process.env.DAYSREMINDER) && diffDays >= 0) {
+          const email = entry?.teenager?.educator?.email;
+          const time = entry?.evaluation_time?.name;
+          const nameteen =
+            entry?.teenager?.first_name + " " + entry?.teenager?.last_name;
+          const username = entry?.teenager?.educator?.username;
+
+          console.log(`Sending email for eval ${entry.id} to ${email}`);
+          console.log(`days remaining : ${diffDays}`);
+          console.log(entry);
+          try {
+            await strapi.plugins["email"].services.email.send({
+              to: email,
+              from: "admin-eval@garelli95.org", // e.g. single sender verification in SendGrid
+              subject: `Rappel de l'évaluation à faire pour ${nameteen}`,
+              //   text: "coucou", // Replace with a valid field ID
+              replyTo: "no-reply@garelli95.org",
+              html: `
+              <p> Ceci est un email automatique</p>
+            <p> bonjour ${username}, </p>
+             <p> Ceci est un rappel pour faire l'évaluation de ${time} de ${nameteen} </p>
+             <p> Vous pouvez la réaliser sur le lien suivant 
+             <a href="https://acquisgarelli.netlify.app/">Evaluation des acquis</a>
+             </p>
+             `,
+            });
+            await strapi.entityService.update(
+              "api::evaluation.evaluation",
+              entry.id,
+              {
+                data: {
+                  emailsent: true,
+                },
+              }
+            );
+
+            console.log("sent with success");
+          } catch (err) {
+            console.log("sending email error, email not sent");
+            console.log(err);
+          }
+        }
+      });
     },
     options: {
-      rule: "0,10,20,30,40,50 * * * * *",
+      rule: process.env.CRONFREQUENCY,
     },
   },
 };

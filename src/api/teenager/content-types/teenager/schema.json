@@ -51,7 +51,8 @@
       "mappedBy": "teenager"
     },
     "entry_date": {
-      "type": "date"
+      "type": "date",
+      "required": true
     },
     "exit_date": {
       "type": "date"

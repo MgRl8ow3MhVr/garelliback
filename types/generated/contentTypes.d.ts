@@ -1015,7 +1015,7 @@ export interface ApiTeenagerTeenager extends Schema.CollectionType {
       'oneToMany',
       'api::evaluation.evaluation'
     >;
-    entry_date: Attribute.Date;
+    entry_date: Attribute.Date & Attribute.Required;
     exit_date: Attribute.Date;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
