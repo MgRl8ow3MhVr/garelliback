@@ -42,7 +42,7 @@ module.exports = {
           (dueDate.valueOf() - now.valueOf()) / (1000 * 60 * 60 * 24)
         );
 
-        if (diffDays <= Number(process.env.DAYSREMINDER) && diffDays >= 0) {
+        if (diffDays <= Number(process.env.DAYSREMINDER) && diffDays >= -2) {
           const email = entry?.teenager?.educator?.email;
           const time = entry?.evaluation_time?.name;
           const nameteen =
@@ -63,6 +63,7 @@ module.exports = {
               <p> Ceci est un email automatique</p>
             <p> bonjour ${username}, </p>
              <p> Ceci est un rappel pour faire l'évaluation de ${time} de ${nameteen} </p>
+             <p> Elle doit avoir lieu dans ${diffDays} jours </p>
              <p> Vous pouvez la réaliser sur le lien suivant 
              <a href="https://acquisgarelli.netlify.app/">Evaluation des acquis</a>
              </p>
