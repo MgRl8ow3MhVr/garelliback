@@ -19,6 +19,16 @@ module.exports = {
               populate: {
                 educator: {
                   fields: ["username", "email"],
+                  populate: {
+                    team: {
+                      fields: [],
+                      populate: {
+                        admin_user: {
+                          fields: ["email"],
+                        },
+                      },
+                    },
+                  },
                 },
               },
             },
@@ -31,12 +41,16 @@ module.exports = {
 
       entries.forEach(async (entry) => {
         const evalMonths = entry?.evaluation_time?.months;
+        // no emails for the entry eval (months is 0)
+        if (!evalMonths) return;
         const entryDate = new Date(entry?.teenager?.entry_date);
         const now = new Date(Date.now());
         const dueDate = new Date(
           entryDate.setMonth(entryDate.getMonth() + Number(evalMonths))
         );
 
+        const teamreferentMail =
+          entry?.teenager?.educator?.team?.admin_user?.email;
         const diffDays = Math.ceil(
           (dueDate.valueOf() - now.valueOf()) / (1000 * 60 * 60 * 24)
         );
@@ -55,19 +69,19 @@ module.exports = {
           try {
             await strapi.plugins["email"].services.email.send({
               to: email,
+              cc: teamreferentMail || null,
               from: "admin-eval@garelli95.org", // e.g. single sender verification in SendGrid
               subject: `Rappel de l'évaluation à faire pour ${nameteen}`,
-              //   text: "coucou", // Replace with a valid field ID
               replyTo: "no-reply@garelli95.org",
               html: `
               <p> Ceci est un email automatique</p>
-            <p> bonjour ${username}, </p>
-             <p> Ceci est un rappel pour faire l'évaluation de ${time} de ${nameteen} </p>
-             <p> Elle doit avoir lieu dans ${diffDays} jours </p>
-             <p> Vous pouvez la réaliser sur le lien suivant 
-             <a href="https://acquisgarelli.netlify.app/">Evaluation des acquis</a>
-             </p>
-             `,
+              <p> bonjour ${username}, </p>
+              <p> Ceci est un rappel pour faire l'évaluation de ${time} de ${nameteen} </p>
+              <p> Elle doit avoir lieu dans ${diffDays} jours </p>
+              <p> Vous pouvez la réaliser sur le lien suivant 
+              <a href="https://acquisgarelli.netlify.app/">Evaluation des acquis</a>
+              </p>
+              `,
             });
             await strapi.entityService.update(
               "api::evaluation.evaluation",
