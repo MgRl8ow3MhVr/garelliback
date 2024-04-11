@@ -71,16 +71,12 @@ module.exports = {
               to: email,
               cc: teamreferentMail || null,
               from: "admin-eval@garelli95.org", // e.g. single sender verification in SendGrid
-              subject: `Rappel de l'évaluation à faire pour ${nameteen}`,
+              subject: `[Mon parcours Garelli ${nameteen}] Rappel échéance ${time}`,
               replyTo: "no-reply@garelli95.org",
               html: `
-              <p> Ceci est un email automatique</p>
-              <p> bonjour ${username}, </p>
-              <p> Ceci est un rappel pour faire l'évaluation de ${time} de ${nameteen} </p>
-              <p> Elle doit avoir lieu dans ${diffDays} jours </p>
-              <p> Vous pouvez la réaliser sur le lien suivant 
-              <a href="https://acquisgarelli.netlify.app/">Evaluation des acquis</a>
-              </p>
+              <p> Bonjour ${username}, </p>
+              <p> Ceci est un rappel pour réaliser l'évaluation de ${time} de ${nameteen}</p>
+              <p> Rendez-vous sur  <a href="https://monparcoursgarelli.netlify.app/">https://monparcoursgarelli.netlify.app</a> pour la réaliser.</p>
               `,
             });
             await strapi.entityService.update(
